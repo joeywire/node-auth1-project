@@ -36,6 +36,20 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-})
+}); 
+
+router.get("/logout", (req, res) => {
+  if (req.session) {
+    req.session.destroy(error => {
+      if (error) {
+        res.status(500).json({ message: "Error while loggin out - try again"});
+      } else {
+        res.status(204).end();
+      }
+    });
+  } else {
+    req.status(200).json({ message: 'Allready logged out'});
+  }
+});
 
 module.exports = router;
