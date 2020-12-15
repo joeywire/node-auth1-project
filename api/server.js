@@ -13,7 +13,27 @@ const dbConfig = require('../database/dbConfig');
 
 const server = express();
 
+//Lets take another look at this after some reading
+const sessionConfiguration = {
+  name: "theFunCookie", //default value is sid(session id)
+  secret: process.env.SESSION_SECRET || 'secretsRsafe', 
+  cookie: {
+    maxAge: 600000,
+    secure: process.env.USE_SECURE_COOKIES || false, 
+    httpOnly: true //prevent client JS from accessing this cookier 
+  },
+  resave: false, 
+  saveUninitialized: true, 
+  store: new KnexSessionStore({
+    knex: dbConfig,
+    tablename: 'sessions', 
+    sidfiledname: 'sid', 
+    createInterval: 1800000 //time to check and remove expired sessions from db
+  })
+};
+
 //GLOBAL MIDDLEWARE
+server.use(session(sessionConfiguration));
 server.use(express.json());
 server.use(helmet());
 server.use(morgan('tiny')); 

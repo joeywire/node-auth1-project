@@ -8,7 +8,12 @@ const add = (user) => {
   return db("users").insert(user); 
 };
 
+const findBy = (filter) => {
+  return db("users").where(filter).orderBy("id");
+}; 
+
 module.exports = {
   getAll, 
-  add
+  add, 
+  findBy
 }
