@@ -8,7 +8,8 @@ const KnexSessionStore = require('connect-session-knex')(session);
 
 const userRouter = require('./users/users-router');
 const authRouter = require('./auth/auth-router');
-const dbConfig = require('../database/dbConfig');  
+const dbConfig = require('../database/dbConfig');
+const authentication = require('./auth/authentication-middleware');  
 
 
 const server = express();
@@ -40,7 +41,7 @@ server.use(morgan('tiny'));
 server.use(cors()); 
 
 //ROUTES
-server.use("/api/users", userRouter); 
+server.use("/api/users",authentication, userRouter); 
 server.use("/api/auth", authRouter); 
 
 server.get("/", (req, res) => {
