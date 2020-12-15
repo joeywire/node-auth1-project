@@ -12,15 +12,5 @@ router.get("/", async (req, res) => {
   }
 }); 
 
-router.post("/", async (req, res) => {
-  const userData = req.body; 
-  try {
-    const newUser = await User.add(userData); 
-    const allUsers = await User.getAll(); 
-    res.status(200).json(allUsers); 
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-})
 
 module.exports = router;
